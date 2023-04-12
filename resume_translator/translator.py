@@ -209,7 +209,7 @@ def main():
         except (NotValidPayload, AttributeError):
             englishText+= line+'\n'
 
-    openai.api_key = "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"
+    openai.api_key = ""  #FILL IN!!!
 
     xml_template = '''
     <?xml version="1.0" encoding="UTF-8"?>
