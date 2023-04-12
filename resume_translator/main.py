@@ -17,12 +17,12 @@ def extract_text_from_pdf_pypdf(pdf_file: str) -> [str]:
     return "hi"
 
 def extract_text_from_pymupdf(pdf_file: str) -> [str]:
-
-    fname = pdf_file
+    import sys, fitz
+    fname = sys.argv[1]  # get document filename
     doc = fitz.open(fname)  # open document
     out = open(fname + ".txt", "wb")  # open text output
     for page in doc:  # iterate the document pages
-        text = page.get_text(sort=True).encode("utf8")  # get plain text (is in UTF-8)
+        text = page.get_text().encode("utf8")  # get plain text (is in UTF-8)
         out.write(text)  # write text of page
         out.write(bytes((12,)))  # write page delimiter (form feed 0x0C)
     out.close()
@@ -47,24 +47,23 @@ def extract_text_from_tika(pdf_file:str) -> [str]:
 def main():
     FILENAME = 'example.pdf'
 
-    extract_text_from_pymupdf(FILENAME)
     #extracted_text = extract_text_from_pdf_pypdf(FILENAME)
-    #extracted_text = extract_text_from_pdf_pdfminer(FILENAME)
+    extracted_text = extract_text_from_pdf_pdfminer(FILENAME)
     # extracted_text = extract_text_from_tika(FILENAME)
-    # textArr = extracted_text.split("\n")
-    #
-    # for i in range(len(textArr)):
-    #         textArr[i]= textArr[i][::-1]
-    #         wordArr = textArr[i].split()
-    #         for j in range(len(wordArr)):
-    #             if notFlip(wordArr[j]):
-    #                 wordArr[j]= wordArr[j][::-1]
-    #         textArr[i]= " ".join(wordArr)
-    #
-    #
-    # for word in textArr:
-    #     # split_message = re.split(r'\s+|[,;?!.-]\s*', text.lower())
-    #     print(word)
+    textArr = extracted_text.split("\n")
+
+    for i in range(len(textArr)):
+            textArr[i]= textArr[i][::-1]
+            wordArr = textArr[i].split()
+            for j in range(len(wordArr)):
+                if notFlip(wordArr[j]):
+                    wordArr[j]= wordArr[j][::-1]
+            textArr[i]= " ".join(wordArr)
+
+
+    for word in textArr:
+        # split_message = re.split(r'\s+|[,;?!.-]\s*', text.lower())
+        print(word)
 
 
 if __name__ == '__main__':
